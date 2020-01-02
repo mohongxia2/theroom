@@ -1,0 +1,93 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>高压电机档案信息</title>
+<link rel="stylesheet" href="../layui/css/layui.css" type="text/css"></link>
+    <script type="text/javascript" src="../js/jquery-2.1.1.js"></script>
+</head>
+<body><br>
+	<form action="" class="layui-form" method="post">
+		<div class="layui-container">
+				<div class="layui-row">
+
+
+				<div class="layui-row">
+					<div class="layui-col-sm12">
+						<table class="layui-hide" id="test" lay-filter="testCri"></table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</body>
+<script type="text/javascript" src="../layui/layui.js"></script>
+			<script type="text/html" id="barDemo">
+		  		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+		 		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+			</script>
+
+<script >
+layui.use(['table'],function(){
+	var table=layui.table;
+	$=layui.jquery;
+	table.render({
+		 elem: '#test',
+		 url: 'writealist', //数据接口
+		 height: 600,
+		 page: true ,//开启分页
+		 title: '用户数据表',
+		 limit:3,
+		 id:'findSelect',
+		 cols: [[ //表头
+			 {field:'writeId',width:160, title: ' 题目编码',sort: true},
+				{field:'paperid.pNum',width:160, title: '试卷号'},
+				{field:'writeWord',width:160, title: ' 默写单词'},
+				{field:'isYes',width:160, title: '题目是否正确  '},
+				{field:'writeDate',width:160, title: ' 默写日期 '},
+				 {field:'studentid.stuName',width:160, title: ' 学生姓名 '},
+				 {field:'stuclassid.classname',width:160, title: ' 班级 '},
+		        {fixed: 'right',title:"操作",toolbar:"#barDemo",width:350}
+			]]
+	});
+
+	table.on('tool(testCri)', function(obj){//testCri是table上的lay-filter的值
+		  var data = obj.data;
+		  if(obj.event === 'del'){//del就是删除按钮的lay-event
+		    layer.confirm('真的删除行么',{icon:3,title:'提示'}, function(index){
+		    	layer.msg(data.equipid);
+		    	$.ajax({
+		    		type:"post",
+		    		url:"findDelete",
+		    		data:{
+		    			equipid:data.equipid
+		    		},
+		    		dataType:"json",
+		    		success:function(data){
+		    			if(data>0){
+		    				layer.msg('信息删除成功',{icon:6,time:2000});
+		    				location.href="index.html";
+		    			}else{
+		    				layer.msg('信息删除失败',{icon:6,time:2000});
+		    			}
+		    		},
+		    		error:function(){
+		    			layer.msg('ajax错误',{icon:6,time:2000});
+		    		}
+		    	});
+		    	obj.del();
+		    });
+		  }
+		});
+
+
+
+		$('#demoTable .layui-btn').on('click', function(){
+			   var type = $(this).data('type');
+			   active[type] ? active[type].call(this) : '';
+			 });
+});
+
+</script>
+</html>

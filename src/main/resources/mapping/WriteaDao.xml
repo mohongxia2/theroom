@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace 叫命名空间，它负责与数据访问接口关联 -->
+<mapper namespace="com.bdqn.dao.WriteaDao">
+
+	<!-- 建立主外键 -->
+	<resultMap type="Writea" id="WriteaMap">
+		<id column="writeId" property="writeId"/>
+		<result column="writeWord" property="writeWord"/>
+		<result column="writeDate" property="writeDate" />
+		<result column="pNum" property="pNum" />
+
+		<!-- 外键对象，默写表与试卷表建立主外键 对象 -->
+		<association property="paperid" column="pId"
+					 select="com.bdqn.dao.PaperDao.findById">
+		</association>
+		<!-- 默写表与学生表建立主外键 -->
+		<association property="studentid" column="stuId"
+					 select="com.bdqn.dao.StudentDao.findById">
+		</association>
+		<!-- 默写表与班级表建立主外键 -->
+		<association property="stuclassid" column="stuClass"
+					 select="com.bdqn.dao.StuclassDao.findById">
+		</association>
+	</resultMap>
+	<!-- 分页查询 -->
+	<select id="findSelect" resultMap="WriteaMap" parameterType="Writea" >
+		SELECT * FROM writea  limit #{currPage}, #{pageSize}
+	</select>
+
+	<!-- 查询总数 -->
+	<select id="Count" resultType="int" >
+		SELECT count(1) FROM writea
+
+
+	</select>
+
+
+</mapper> 

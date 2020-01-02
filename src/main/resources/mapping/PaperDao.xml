@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace 叫命名空间，它负责与数据访问接口关联 -->
+<mapper namespace="com.bdqn.dao.PaperDao">
+	<!-- 根据id查询当个对象 -->
+	<select id="findById" resultType="Paper" parameterType="int">
+    select * from paper where pid=#{pid}
+   </select>
+
+
+</mapper> 
